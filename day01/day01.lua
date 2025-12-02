@@ -1,5 +1,5 @@
 -- Advent of Code 2025 - Day 1
--- https://adventofchde.com/2025/day/1
+-- https://adventofcode.com/2025/day/1
 
 local function read_input(filename)
     local lines = {}
