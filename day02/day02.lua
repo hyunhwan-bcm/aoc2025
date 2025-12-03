@@ -50,10 +50,41 @@ local function part1(input)
   return ret
 end
 
+
+local function eval(s, n)
+  for j=1,n-1 do
+    if n % j == 0 then
+      local is_invalid = true
+      for k=1,n,j do
+        if string.sub(s, 1, j) ~= string.sub(s, k, k+j-1) then
+          is_invalid = false
+          break
+        end
+      end
+      if is_invalid then return tonumber(s) end
+    end
+  end
+  return 0
+end
+
 -- Part 2
 local function part2(input)
-  -- TODO: Implement part 2
-  return 0
+  local ids = ""
+  local ret = 0
+  for _, line in ipairs(input) do
+    ids = ids .. line
+  end
+  for range in string.gmatch(ids, '[%d]+-[%d]+') do
+    local numbers = split(range, "-")
+    local lo = tonumber(numbers[1])
+    local hi = tonumber(numbers[2])
+    for i=lo,hi do
+      local s_i = tostring(i)
+      ret = ret + eval(s_i, string.len(s_i))
+    end
+
+  end
+  return ret
 end
 
 -- Main execution
