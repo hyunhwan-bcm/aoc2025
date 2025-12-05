@@ -9,6 +9,13 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
+# Validate that the argument is a number
+if ! [[ "$1" =~ ^[0-9]+$ ]]; then
+    echo "Error: Argument must be a number"
+    echo "Usage: ./generate.sh <day_number>"
+    exit 1
+fi
+
 DAY=$1
 DAY_PADDED=$(printf "%02d" $DAY)
 DIR_NAME="day${DAY_PADDED}"
@@ -36,41 +43,41 @@ cat > "$DIR_NAME/$FILE_NAME" << 'LUAEOF'
 
 -- Read input file
 local function read_input(filename)
-    local lines = {}
-    local file = io.open(filename, "r")
-    if not file then
-        error("Could not open file: " .. filename)
-    end
+  local lines = {}
+  local file = io.open(filename, "r")
+  if not file then
+    error("Could not open file: " .. filename)
+  end
 
-    for line in file:lines() do
-        table.insert(lines, line)
-    end
-    file:close()
-    return lines
+  for line in file:lines() do
+    table.insert(lines, line)
+  end
+  file:close()
+  return lines
 end
 
 -- Part 1
 local function part1(input)
-    -- TODO: Implement part 1
-    return 0
+  -- TODO: Implement part 1
+  return 0
 end
 
 -- Part 2
 local function part2(input)
-    -- TODO: Implement part 2
-    return 0
+  -- TODO: Implement part 2
+  return 0
 end
 
 -- Main execution
 local function main()
-    local filename = arg[1] or "input.txt"
-    local input = read_input(filename)
+  local filename = arg[1] or "input.txt"
+  local input = read_input(filename)
 
-    local result1 = part1(input)
-    print("Part 1: " .. result1)
+  local result1 = part1(input)
+  print("Part 1: " .. result1)
 
-    local result2 = part2(input)
-    print("Part 2: " .. result2)
+  local result2 = part2(input)
+  print("Part 2: " .. result2)
 end
 
 main()
