@@ -39,8 +39,35 @@ end
 
 -- Part 2
 local function part2(input)
-  -- TODO: Implement part 2
-  return 0
+  local ret = 0
+  for _,line in ipairs(input) do
+    local s = 0
+    local t = {}
+    for i=1,#line do
+      t[i] = line:byte(i) - 48
+    end
+
+    local n = #line
+    local best = 0
+    for i=12,1,-1 do
+      s = s+1
+      local j = s
+      local best_d = t[s]
+      local best_where = s
+      while n - j + 1 >= i do
+        if t[j] > best_d then
+          best_d = t[j]
+          best_where = j
+        end
+        j = j + 1
+      end
+      best = best * 10 + best_d
+      s = best_where
+    end
+    print(line, best)
+    ret = ret + best
+  end
+  return ret
 end
 
 -- Main execution
