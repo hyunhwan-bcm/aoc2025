@@ -34,7 +34,21 @@ print(#str)  -- 5
 
 local empty = ""
 print(#empty)  -- 0
+
+-- Using # in loops to iterate through characters
+local word = "XMAS"
+for i = 1, #word do
+    local char = word:sub(i, i)
+    print(i, char)
+end
+-- Output:
+-- 1    X
+-- 2    M
+-- 3    A
+-- 4    S
 ```
+
+**Tip:** The `#` operator is commonly used with `string.sub()` to convert strings to character arrays. See the "Convert String Array to 2D Character Grid" pattern in [tables.md](tables.md) for AOC examples.
 
 ## String Library Functions
 
