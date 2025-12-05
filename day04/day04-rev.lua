@@ -3,9 +3,11 @@
 
 local function read_lines(fname)
   local lines = {}
-  for line in io.open(fname, "r"):lines() do
+  local file = io.open(fname, "r")
+  for line in file:lines() do
     table.insert(lines, line)
   end
+  file:close()
   return lines
 end
 
