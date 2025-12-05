@@ -53,8 +53,56 @@ end
 
 -- Part 2
 local function part2(input)
-  -- TODO: Implement part 2
-  return 0
+  local ret = 0
+  local map = {}
+
+  for i, line in ipairs(input) do
+    map[i] = {}
+    for j = 1,#line do
+      map[i][j] = line:sub(j,j)
+    end
+  end
+
+  local n = #map
+  local m = #map[1]
+
+  while true do
+    local removed = false
+    local pos = {}
+    for i=1,n do
+      for j=1,m do
+        if map[i][j] == "@" then
+          local paper = 0
+          for k=-1,1 do
+            for l=-1,1 do
+              if i+k < 1 or i+k > n then goto continue end
+              if j+l < 1 or j+l > m then goto continue end
+              if map[i+k][j+l] == "@" then paper = paper + 1 end
+              ::continue::
+            end
+          end
+
+          if paper <= 4 then
+            table.insert(pos, {i,j})
+            removed = true
+          end
+        end
+      end
+    end
+
+    if removed then
+      for _,p in ipairs(pos) do
+        local i = p[1]
+        local j = p[2]
+        map[i][j] = '.'
+      end
+
+      ret = ret + #pos
+    else
+      break
+    end
+  end
+  return ret
 end
 
 -- Main execution
