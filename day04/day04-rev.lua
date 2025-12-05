@@ -4,6 +4,9 @@
 local function read_lines(fname)
   local lines = {}
   local file = io.open(fname, "r")
+  if not file then
+    error("Could not open file: " .. fname)
+  end
   for line in file:lines() do
     table.insert(lines, line)
   end
