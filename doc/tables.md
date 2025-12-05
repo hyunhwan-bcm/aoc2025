@@ -340,6 +340,71 @@ end
 local grid = create_grid(3, 3, ".")
 ```
 
+### Convert String Array to 2D Character Grid
+```lua
+-- Common pattern for reading AOC input as a 2D character map
+local function parse_grid(input)
+    local map = {}
+
+    -- Convert each string line to array of characters
+    for i, line in ipairs(input) do
+        map[i] = {}
+        for j = 1, #line do
+            map[i][j] = line:sub(j, j)
+        end
+    end
+
+    return map
+end
+
+-- Example usage
+local input = {
+    "###.",
+    "#..#",
+    "####"
+}
+
+local map = parse_grid(input)
+
+-- Get dimensions using # operator
+local rows = #map          -- 3
+local cols = #map[1]       -- 4
+
+-- Access individual characters
+print(map[1][1])  -- "#"
+print(map[2][2])  -- "."
+
+-- Modify characters
+map[1][1] = "X"
+```
+
+### Create List of Tuples with Named Keys
+```lua
+-- Create tuples with named keys
+local list = {}
+
+-- Append tuples
+table.insert(list, { x = 3, y = 7 })
+table.insert(list, { x = 10, y = 20 })
+
+-- Iterate with ipairs
+for _, t in ipairs(list) do
+    print(t.x, t.y)
+end
+-- Output:
+-- 3    7
+-- 10   20
+
+-- Common AOC pattern: storing coordinates or structured data
+local positions = {}
+table.insert(positions, { row = 1, col = 5, value = "#" })
+table.insert(positions, { row = 2, col = 3, value = "@" })
+
+for _, pos in ipairs(positions) do
+    print(string.format("(%d,%d) = %s", pos.row, pos.col, pos.value))
+end
+```
+
 ### Count Occurrences
 ```lua
 local function count_occurrences(arr)
