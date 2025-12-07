@@ -56,7 +56,52 @@ end
 -- Part 2
 local function part2(input)
   -- TODO: Implement part 2
-  return 0
+  local ret = 0
+  local intervals = {}
+  for _,line in ipairs(input) do
+    if #line == 0 then
+      table.sort(intervals, function(l,r)
+        if l[1] ~= r[1] then return l[1] < r[1] end
+        return l[2] < r[2]
+      end)
+
+      local seen = {}
+
+      for _,p in ipairs(intervals) do
+        seen[p[1]] = true
+        seen[p[2]] = true
+      end
+
+      local points = {}
+      for v,_ in pairs(seen) do
+        table.insert(points, v)
+      end
+
+      table.sort(points)
+
+      ret = points[#points] - points[1] + 1
+      for i =1,#points-1 do
+        local found = false
+        for _,p in ipairs(intervals) do
+          if p[1] <= points[i] and points[i+1] <= p[2] then
+            found = true
+            break
+          end
+        end
+
+        if found == false then
+          ret = ret - (points[i+1] - points[i] - 1)
+        end
+      end
+  
+      break
+    end
+    local l,r = line:match("^(%d+)-(%d+)$")
+    l = tonumber(l)
+    r = tonumber(r)
+    table.insert(intervals,{l,r})
+  end
+  return ret
 end
 
 -- Main execution
@@ -72,4 +117,3 @@ local function main()
 end
 
 main()
-
