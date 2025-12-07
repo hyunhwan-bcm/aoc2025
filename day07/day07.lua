@@ -1,4 +1,5 @@
 -- Advent of Code 2025 - Day 7
+-- GF
 -- https://adventofcode.com/2025/day/7
 
 local function read_input(filename)
@@ -23,11 +24,7 @@ local function print_map(map)
     io.write("\n")
   end
 end
-
-local Queue = {}
-Queue.__index = Queue
-
-function Queue:new()
+local Queue = {} Queue.__index = Queue function Queue:new()
     return setmetatable({ items = {} }, self)
 end
 
@@ -48,7 +45,7 @@ local function part1(map)
   local ret = 0
   local si, sj = -1,-1
 
-  for i=1,#map do 
+  for i=1,#map do
     for j=1,#map[i] do
       if map[i][j] == "S" then
         si,sj = i,j
@@ -89,11 +86,45 @@ local function part1(map)
   return ret
 end
 
--- Part 2
-local function part2(map)
-  -- TODO: Implement part 2
-  return 0
+local cache = {}
+
+local function make_key(status1, status2)
+  -- Make sure to separate with something that cannot appear in values,
+  -- or escape appropriately.
+  return tostring(status1) .. "|" .. tostring(status2)
 end
+
+local function solve(map, i,j)
+  if i >= #map then
+    return 1
+  end
+
+  local key = make_key(i,j)
+  if cache[key] ~= nil then
+    return cache[key]
+  end
+
+  if map[i+1][j] == "^" then
+    local ret = 0
+    if j > 1 then ret = ret + solve(map, i+1,j-1) end
+    if j < #map[i+1] then ret = ret + solve(map, i+1,j+1) end
+    cache[key] = ret
+    return ret
+  else
+    cache[key] = solve(map, i+1,j)
+    return cache[key]
+  end
+end
+
+local function part2(map)
+  local sj = 0
+  for j=1,#map[1] do
+    if map[1][j] == "|" then sj = j end
+  end
+
+  return solve(map, 1, sj)
+end
+
 
 -- Main execution
 local function main()
