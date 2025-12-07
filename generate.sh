@@ -41,19 +41,22 @@ cat > "$DIR_NAME/$FILE_NAME" << 'LUAEOF'
 -- Advent of Code 2025 - Day DAY_NUM
 -- https://adventofcode.com/2025/day/DAY_NUM
 
--- Read input file
 local function read_input(filename)
+  local file = assert(io.open(filename, "r"), "Could not open file: " .. filename)
   local lines = {}
-  local file = io.open(filename, "r")
-  if not file then
-    error("Could not open file: " .. filename)
-  end
-
   for line in file:lines() do
-    table.insert(lines, line)
+    lines[#lines + 1] = line
   end
   file:close()
   return lines
+end
+
+local function split_wspace(line)
+  local t = {}
+  for tok in line:gmatch("%S+") do
+    t[#t + 1] = tok
+  end
+  return t
 end
 
 -- Part 1
@@ -72,12 +75,9 @@ end
 local function main()
   local filename = arg[1] or "input.txt"
   local input = read_input(filename)
-
-  local result1 = part1(input)
-  print("Part 1: " .. result1)
-
-  local result2 = part2(input)
-  print("Part 2: " .. result2)
+  
+  print("Part 1: " .. part1(input))
+  print("Part 2: " .. part2(input))
 end
 
 main()
