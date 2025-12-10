@@ -64,7 +64,11 @@ local function part1(org_input)
     count[i] = 1
   end
 
-  for i=1,1000 do
+  local num_iter = 1000
+  if #input == 20 then
+    num_iter = 10
+  end
+  for i=1,num_iter do
     local a,b = dist[i][2], dist[i][3]
     if get_parent(parent, a) ~= get_parent(parent, b) then
       if get_count(parent, count, a) > get_count(parent, count, b) then
@@ -92,11 +96,51 @@ local function part1(org_input)
   return counted[1] * counted[2] * counted[3]
 end
 
--- Part 2
-local function part2(input)
-  -- TODO: Implement part 2
+local function part2(org_input)
+  -- TODO: Implement part 1
+  local input = {}
+  for i=1,#org_input do
+    input[i] = get_coordinate(org_input[i])
+  end
+
+  local dist = {}
+  for i=1,#input do
+    for j=i+1,#input do
+      table.insert(dist,{get_distance(input[i],input[j]),i,j})
+    end
+  end
+  table.sort(dist, function(a,b)
+    return a[1] < b[1]
+  end)
+
+  local parent, count = {}, {}
+  for i=1,#input do
+    parent[i] = i
+    count[i] = 1
+  end
+
+  for i=1,#dist do
+    local a,b = dist[i][2], dist[i][3]
+    if get_parent(parent, a) ~= get_parent(parent, b) then
+      if get_count(parent, count, a) > get_count(parent, count, b) then
+        update(parent, count, a, b)
+
+        if get_count(parent, count, a) == #input then
+          return input[a][1] * input[b][1]
+        end
+      else
+        update(parent, count, b, a)
+        if get_count(parent, count, b) == #input then
+          return input[a][1] * input[b][1]
+        end
+      end
+
+    end
+  end
+
   return 0
 end
+
 
 -- Main execution
 local function main()
