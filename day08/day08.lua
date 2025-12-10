@@ -11,14 +11,6 @@ local function read_input(filename)
   return lines
 end
 
-local function split_wspace(line)
-  local t = {}
-  for tok in line:gmatch("%S+") do
-    t[#t + 1] = tok
-  end
-  return t
-end
-
 local function get_coordinate(line)
   local t = {}
   for tok in line:gmatch("%d+") do
@@ -28,13 +20,32 @@ local function get_coordinate(line)
 end
 
 local function get_distance(x, y)
-  return x[1]*y[1] + x[2]*y[2] + x[3]*y[3]
+  return (x[1]-y[1])^2 + (x[2]-y[2])^2 + (x[3]-y[3])^2
 end
--- Part 1
-local function part1(input)
+-- Part
+
+local function get_parent(parent, i)
+  return parent[i] == i and i or get_parent(parent, parent[i])
+end
+
+local function get_count(parent, count, i)
+  return count[get_parent(parent, i)]
+end
+
+local function update(parent, count, to, from)
+  local parent_from = get_parent(parent, from)
+  local parent_to = get_parent(parent, to)
+
+  parent[parent_to] = parent_from
+  count[parent_from] = count[parent_from] + count[parent_to]
+  count[parent_to] = 0
+end
+
+local function part1(org_input)
   -- TODO: Implement part 1
-  for i=1,#input do
-    input[i] = get_coordinate(input[i])
+  local input = {}
+  for i=1,#org_input do
+    input[i] = get_coordinate(org_input[i])
   end
 
   local dist = {}
@@ -47,7 +58,38 @@ local function part1(input)
     return a[1] < b[1]
   end)
 
-  return 0
+  local parent, count = {}, {}
+  for i=1,#input do
+    parent[i] = i
+    count[i] = 1
+  end
+
+  for i=1,1000 do
+    local a,b = dist[i][2], dist[i][3]
+    if get_parent(parent, a) ~= get_parent(parent, b) then
+      if get_count(parent, count, a) > get_count(parent, count, b) then
+        update(parent, count, a, b)
+      else
+        update(parent, count, b, a)
+      end
+
+    end
+  end
+
+
+
+  local counted = {}
+  for i=1,#input do
+    if i == get_parent(parent, i) then
+      counted[#counted+1] = count[i]
+    end
+  end
+
+  table.sort(counted, function(a,b)
+    return a > b
+  end)
+
+  return counted[1] * counted[2] * counted[3]
 end
 
 -- Part 2
