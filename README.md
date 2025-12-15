@@ -15,7 +15,7 @@ My solutions for [Advent of Code 2025](https://adventofcode.com/2025) written in
 | 07  | [Day 7](https://adventofcode.com/2025/day/7) | [day07.lua](day07/day07.lua) |⭐⭐|
 | 08  | [Day 8](https://adventofcode.com/2025/day/8) | [day08.lua](day08/day08.lua) |⭐⭐|
 | 09  | [Day 9](https://adventofcode.com/2025/day/9) | [day09.lua](day09/day09.lua) |⭐⭐|
-| 10  | [Day 10](https://adventofcode.com/2025/day/10) | [day10.lua](day10/day10.lua) |  |
+| 10  | [Day 10](https://adventofcode.com/2025/day/10) | [day10.lua](day10/day10.lua) |⭐|
 | 11  | [Day 11](https://adventofcode.com/2025/day/11) | [day11.lua](day11/day11.lua) |  |
 | 12  | [Day 12](https://adventofcode.com/2025/day/12) | [day12.lua](day12/day12.lua) |  |
 
