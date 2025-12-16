@@ -3,8 +3,7 @@
 
 local function read_input(filename)
   local file = assert(io.open(filename, "r"), "Could not open file: " .. filename)
-  local lines = {}
-  for line in file:lines() do
+  local lines = {} for line in file:lines() do
     lines[#lines + 1] = line
   end
   file:close()
@@ -72,10 +71,46 @@ local function part1(input)
   return ret
 end
 
+local function seek(tb, t)
+  for _, v in ipairs(tb) do
+    if v == t then
+      return true
+    end
+  end
+  return false
+end
+
 -- Part 2
 local function part2(input)
   -- TODO: Implement part 2
-  return 0
+  local n = #input
+  local solver = require("gaussian")
+  local ret = 0
+  for i=1,n do
+    local L, B, J = get_input(input[i])
+
+    local A = {}
+    for j=1,#L do
+      A[j] = {}
+      for k=1,#B do
+        A[j][k] = seek(B[k], j) and 1 or 0
+      end
+    end
+    local sol, obj = solver.solve(A, J)
+
+    if sol then
+      print(table.concat(sol, " "))
+      print(obj)
+    else
+      print("error")
+      for j=1,#A do
+        print(table.concat(A[j], " "))
+      end
+      print(table.concat(J, " "))
+    end
+    ret = ret + obj
+  end
+  return math.floor(ret)
 end
 
 -- Main execution
